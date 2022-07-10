@@ -28,8 +28,7 @@ class Base64ImageField(ImageField):
 
     @staticmethod
     def get_file_extension(file_name, decoded_file):
-
         extension = imghdr.what(file_name, decoded_file)
-        extension = "jpg" if extension == "jpeg" else extension
-
+        if extension == 'jpeg':
+            return 'jpg'
         return extension
