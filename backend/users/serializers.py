@@ -1,10 +1,9 @@
+from core.fields import Base64ImageField
+from recipes.models import Recipe
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import (CharField, ReadOnlyField,
                                    SerializerMethodField)
 from rest_framework.serializers import ModelSerializer, Serializer
-
-from core.fields import Base64ImageField
-from recipes.models import Recipe
 from users.models import Follow, User
 
 
