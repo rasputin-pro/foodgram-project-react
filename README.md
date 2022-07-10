@@ -1,6 +1,6 @@
 # Foodgram
 
-![Foodgram Workflow Status](https://github.com/rasputin-pro/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master&event=push)
+![Foodgram Workflow Status](https://github.com/rasputin-pro/foodgram-project-react/actions/workflows/workflow.yml/badge.svg?branch=master&event=push)
 ___
 
 
