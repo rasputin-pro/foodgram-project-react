@@ -2,7 +2,9 @@ import csv
 
 from colorama import Fore, init
 from django.core.management.base import BaseCommand
+
 from recipes.models import Ingredient
+
 
 init(autoreset=True)
 

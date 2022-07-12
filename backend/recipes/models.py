@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+
 from tags.models import Tag
 from users.models import User
 
@@ -10,7 +11,7 @@ class Recipe(models.Model):
         verbose_name='Название рецепта'
     )
     author = models.ForeignKey(
-        User,
+        to=User,
         on_delete=models.CASCADE,
         related_name='recipes',
         verbose_name='Автор',
@@ -32,13 +33,13 @@ class Recipe(models.Model):
         verbose_name='Время приготовления',
     )
     ingredients = models.ManyToManyField(
-        'Ingredient',
+        to='Ingredient',
         related_name='recipes',
-        through='IngredientAmount',
+        through='recipes.IngredientAmount',
         verbose_name='Ингредиент'
     )
     tags = models.ManyToManyField(
-        Tag,
+        to=Tag,
         related_name='recipes',
         verbose_name='Тег'
     )
@@ -79,12 +80,12 @@ class Ingredient(models.Model):
 
 class IngredientAmount(models.Model):
     recipe = models.ForeignKey(
-        Recipe,
+        to=Recipe,
         on_delete=models.CASCADE,
         verbose_name='Рецепт',
     )
     ingredient = models.ForeignKey(
-        Ingredient,
+        to=Ingredient,
         on_delete=models.CASCADE,
         verbose_name='Ингредиент',
     )
@@ -107,16 +108,19 @@ class IngredientAmount(models.Model):
                 name='unique_recipe_ingredient')
         ]
 
+    def __str__(self):
+        return f'{self.ingredient} in {self.recipe}'
+
 
 class Favorite(models.Model):
     user = models.ForeignKey(
-        User,
+        to=User,
         on_delete=models.CASCADE,
         related_name='favorites',
         verbose_name='Пользователь',
     )
     recipe = models.ForeignKey(
-        Recipe,
+        to=Recipe,
         on_delete=models.CASCADE,
         related_name='favorites',
         verbose_name='Рецепт',
@@ -135,13 +139,13 @@ class Favorite(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(
-        User,
+        to=User,
         on_delete=models.CASCADE,
         related_name='cart',
         verbose_name='Пользователь',
     )
     recipe = models.ForeignKey(
-        Recipe,
+        to=Recipe,
         on_delete=models.CASCADE,
         related_name='cart',
         verbose_name='Рецепт',
