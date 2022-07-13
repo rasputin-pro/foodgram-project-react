@@ -1,4 +1,4 @@
-from django.db.models import F, Sum
+from django.db.models import Sum
 from django.http import HttpResponse
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -55,41 +55,11 @@ class RecipeViewSet(ModelViewSet):
         methods=['GET'],
         permission_classes=(IsAuthenticated,))
     def download_shopping_cart(self, request):
-        cart_list = {}
-        user = request.user
-        # TODO - Кол-во можно сразу посчитать в запросе при помощи annotate
-        # ingredients = IngredientAmount.objects.filter(
-        #     recipe__cart__user=request.user).values_list(
-        #     'ingredient__name', 'ingredient__measurement_unit'
-        # ).annotate(amount=Sum('amount'))
-        # for item in ingredients:
-        #     name = item[0]
-        #     if name not in cart_list:
-        #         cart_list[name] = {
-        #             'measurement_unit': item[1],
-        #             'amount': item[2]
-        #         }
-        #     else:
-        #         cart_list[name]['amount'] += item[2]
-        # -----------------------------------------------------------------
         ingredients = IngredientAmount.objects.filter(
             recipe__cart__user=request.user).order_by(
             'ingredient__name').values(
                 'ingredient__name', 'ingredient__measurement_unit'
-            ).annotate(amount_total=Sum('amount'))
-
-        # # DEBUG --------------------------------------------------------------
-        # import pdb
-        # pdb.set_trace()
-        # # DEBUG --------------------------------------------------------------
-
-        cart_list = ''
-        for item in ingredients:
-            cart_list += (
-                f'{item["amount_total"]}'
-                f' {item["ingredient__measurement_unit"]}\n'
-            )
-        # ----------------------------------------------------------------
+        ).annotate(amount_total=Sum('amount'))
 
         pdfmetrics.registerFont(TTFont('JetBrainsMono-Regular',
                                        'JetBrainsMono-Regular.ttf', 'UTF-8'))
@@ -97,17 +67,17 @@ class RecipeViewSet(ModelViewSet):
         response['Content-Disposition'] = ('attachment; '
                                            'filename="shopping_cart.pdf"')
         p = canvas.Canvas(response)
-        p.setFont('JetBrainsMono-Regular', size=10)
-        # p.drawString(70, 770, 'Список покупок')
-        p.drawString(70, 770, cart_list)
+        p.setFont('JetBrainsMono-Regular', size=24)
+        p.drawString(70, 770, 'Список покупок')
         p.setFont('JetBrainsMono-Regular', size=16)
         height = 730
-        # for name, data in cart_list.items():
-        #     p.drawString(
-        #         90,
-        #         height,
-        #         f'{name} ({data["measurement_unit"]}) — {data["amount"]}')
-        #     height -= 25
+        for item in ingredients:
+            p.drawString(
+                90, height,
+                f'{item["ingredient__name"]} '
+                f'({item["ingredient__measurement_unit"]}) —'
+                f' {item["amount_total"]}')
+            height -= 25
         p.showPage()
         p.save()
         return response

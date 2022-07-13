@@ -45,8 +45,6 @@ class RecipeSerializer(ModelSerializer):
         return user.cart.filter(recipe=obj.id).exists()
 
     def validate(self, data):
-        # TODO - Все данные нужно брать из аргумента data т.к. в этом аргументе
-        #  хранятся данные, которые прошли предварительную валидацию
         ingredients = self.initial_data.get('ingredients')
         tags = self.initial_data.get('tags')
         if not ingredients:
