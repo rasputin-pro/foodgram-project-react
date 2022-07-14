@@ -95,7 +95,7 @@ class FollowSerializer(ModelSerializer):
 
     @staticmethod
     def get_recipes_count(obj):
-        return obj.author.recipes.all().count()
+        return obj.author.recipes.all().count()  # TODO?
 
 
 class ShortRecipeSerializer(ModelSerializer):

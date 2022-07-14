@@ -132,4 +132,4 @@ dmypy.json
 .idea
 
 # FOODGRAM
-/backend/media/
+backend/media/

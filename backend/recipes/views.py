@@ -5,7 +5,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import SAFE_METHODS, AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
                                    HTTP_400_BAD_REQUEST)
@@ -14,15 +14,20 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from core.filters import IngredientsFilter, RecipesFilter
 from recipes.models import Ingredient, IngredientAmount, Recipe
 from recipes.permissions import AuthorOrReadOnly
-from recipes.serializers import IngredientSerializer, RecipeSerializer
+from recipes.serializers import (IngredientSerializer, RecipeCreateSerializer,
+                                 RecipeReadSerializer)
 from users.serializers import ShortRecipeSerializer
 
 
 class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
     permission_classes = (AuthorOrReadOnly, )
     filter_class = RecipesFilter
+
+    def get_serializer_class(self):
+        if self.request.method in SAFE_METHODS:
+            return RecipeReadSerializer
+        return RecipeCreateSerializer
 
     @action(
         detail=True,
