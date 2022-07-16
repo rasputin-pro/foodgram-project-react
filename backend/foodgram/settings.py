@@ -3,7 +3,7 @@ import os
 from django.core.management.utils import get_random_secret_key
 
 
-STATE = 'debug'
+STATE = 'production'
 """ STATE 'local' - for local development.
     STATE 'debug' - for debugging on docker.
     STATE 'test' - for testing on docker.
