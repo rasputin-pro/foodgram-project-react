@@ -41,7 +41,7 @@ jobs:
         uses: garygrossgarten/github-action-scp@release
         with:
           local: infra/
-          remote: /home/${{ secrets.USER }}/infra/
+          remote: /home/${{ secrets.USER }}/
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           privateKey: ${{ secrets.SSH_KEY }}
