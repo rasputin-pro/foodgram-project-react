@@ -20,7 +20,8 @@ ___
 git@github.com:rasputin-pro/foodgram-project-react.git
 ```
 
-В папке `infra` создайте файл `.env` с переменными для работы с базой данных:
+В папке `infra_local` создайте файл `.env` с переменными для работы с базой 
+данных:
 ```python
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=postgres # имя базы данных
@@ -44,3 +45,13 @@ docker compose exec backend python manage.py createsuperuser
 ## Документация
 После запуска проекта - по адресу: `http://localhost/api/docs/` доступна 
 документация.
+
+## Демо
+Проект временно развёрнут по адресу: 
+[foodgram.rasputin.pro](http://foodgram.rasputin.pro)
+
+Логин: `admin`
+
+Пароль: `PaSSWoRD111`
+
+Email: `admin@mail.ru`
