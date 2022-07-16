@@ -34,11 +34,20 @@ jobs:
           username: ${{ secrets.USER }}
           privateKey: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
+      - name: Create projects directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo rm -rf docs/
+            mkdir -p docs/
       - name: Copy docs
         uses: garygrossgarten/github-action-scp@release
         with:
           local: docs/
-          remote: /home/${{ secrets.USER }}/
+          remote: /home/${{ secrets.USER }}/docs/
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           privateKey: ${{ secrets.SSH_KEY }}
