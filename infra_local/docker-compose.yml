@@ -4,7 +4,6 @@ volumes:
   static_value:
   media_value:
   database:
-  frontend:
 
 services:
 
@@ -17,8 +16,7 @@ services:
       - ./.env
 
   backend:
-    image: rasputin21/foodgram_backend:latest
-#    build: ../backend
+    build: ../backend
     restart: always
     volumes:
       - static_value:/app/staticfiles/
@@ -29,12 +27,11 @@ services:
       - ./.env
 
   frontend:
-#    build:
-#      context: ../frontend
-#      dockerfile: Dockerfile
-    image: rasputin21/foodgram_frontend:latest
+    build:
+      context: ../frontend
+      dockerfile: ../frontend/Dockerfile
     volumes:
-      - frontend:/app/result-build/
+      - ../frontend/:/app/result-build/
 
   nginx:
     image: nginx:1.19.3
