@@ -35,8 +35,6 @@ jobs:
           script: |
             sudo rm -rf docs/
             sudo mkdir -p docs/
-            sudo rm -rf docker-compose.yml
-            sudo rm -rf nginx.conf
       - name: Copy infra
         uses: garygrossgarten/github-action-scp@release
         with:
