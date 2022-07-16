@@ -25,24 +25,27 @@ jobs:
     needs: tests
     steps:
       - uses: actions/checkout@v2
-      - name: Copy infra
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: infra/
-          remote: /home/${{ secrets.USER }}/
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          privateKey: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-      - name: Create projects directory
+      - name: Delete old files
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo rm -rf docs/
             mkdir -p docs/
+            sudo rm -rf docker-compose.yml
+            sudo rm -rf nginx.conf
+      - name: Copy infra
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: infra/
+          remote: /home/${{ secrets.USER }}/infra/
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          privateKey: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Copy docs
         uses: garygrossgarten/github-action-scp@release
         with:
