@@ -4,6 +4,7 @@ volumes:
   static_value:
   media_value:
   database:
+  frontend_value:
 
 services:
 
@@ -17,7 +18,7 @@ services:
       - ./.env
 
   backend:
-    image: rasputin21/foodgram_backend:latest
+    image: rasputin21/foodgram_backend:v1
     container_name: backend
     restart: always
     volumes:
@@ -29,10 +30,12 @@ services:
       - ./.env
 
   frontend:
-    image: rasputin21/foodgram_frontend:latest
+    image: rasputin21/foodgram_frontend:v1
     container_name: frontend
     volumes:
-      - ./frontend/:/app/result-build/
+#      - ./frontend/:/app/result-build/
+      - frontend_value:/app/build/
+#      - frontend_value:/app/result-build/
 
   nginx:
     image: nginx:1.19.3
@@ -42,7 +45,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./frontend/build:/usr/share/nginx/html/
+#      - ./frontend/build:/usr/share/nginx/html/
+      - frontend_value:/usr/share/nginx/html/
       - ./docs/:/usr/share/nginx/html/api/docs/
       - static_value:/var/html/staticfiles/
       - media_value:/var/html/media/
