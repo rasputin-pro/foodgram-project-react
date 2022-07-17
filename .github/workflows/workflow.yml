@@ -69,7 +69,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          context: frontend/
+          context: ./frontend/
           file: Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:v3
 
