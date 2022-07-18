@@ -19,31 +19,31 @@ jobs:
       run: |
         python -m flake8
 
-#  copy_files_to_server:
-#    name: Copy infra and docs
-#    runs-on: ubuntu-latest
-#    needs: tests
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Delete old files
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USER }}
-#          key: ${{ secrets.SSH_KEY }}
-#          passphrase: ${{ secrets.PASSPHRASE }}
-#          script: |
-#            sudo rm -rf docs/
-#            sudo mkdir -p docs/
-#      - name: Copy docs
-#        uses: garygrossgarten/github-action-scp@release
-#        with:
-#          local: docs/
-#          remote: /home/${{ secrets.USER }}/docs/
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USER }}
-#          privateKey: ${{ secrets.SSH_KEY }}
-#          passphrase: ${{ secrets.PASSPHRASE }}
+  copy_files_to_server:
+    name: Copy infra and docs
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - uses: actions/checkout@v2
+      - name: Delete old files
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            sudo rm -rf docs/
+            sudo mkdir -p docs/
+      - name: Copy docs
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: docs/
+          remote: /home/${{ secrets.USER }}/docs/
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          privateKey: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
 
   build_and_push_backend:
     name: Push backend image to Docker Hub
@@ -92,7 +92,7 @@ jobs:
     needs: [
       build_and_push_backend,
       build_and_push_frontend,
-#      copy_files_to_server
+      copy_files_to_server
     ]
     if: github.ref == 'refs/heads/master'
     steps:
