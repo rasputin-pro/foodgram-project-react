@@ -31,27 +31,33 @@ DB_HOST=db # название контейнера, оставьте как ес
 DB_PORT=5432
 ```
 
-В коммандной строке перейдите в папку `infra`, и разверните проект в docker 
-compose:
+В коммандной строке перейдите в папку `infra_local`, и разверните проект в 
+docker compose:
 ```commandline
 docker compose up -d
 ```
 
 Создайте суперпользователя:
 ```commandline
-docker compose exec backend python manage.py createsuperuser
+docker compose exec -it infra_local-backend-1 python manage.py createsuperuser
 ```
 
-## Документация
+Загрузите демонстрационные данные в базу данных:
+```commandline
+docker compose exec -it infra_local-backend-1 python manage.py loaddata dump.
+json
+```
+
+## Документация API
 После запуска проекта - по адресу: `http://localhost/api/docs/` доступна 
-документация.
+документация по API.
 
 ## Демо
 Проект временно развёрнут по адресу: 
-[foodgram.rasputin.pro](http://foodgram.rasputin.pro)
+[84.252.137.73](http://84.252.137.73)
 
-Логин: `admin`
+Имя пользователя: `review`
 
 Пароль: `PaSSWoRD111`
 
-Email: `admin@mail.ru`
+Email: `review@mail.ru`
