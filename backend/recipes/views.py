@@ -71,19 +71,25 @@ class RecipeViewSet(ModelViewSet):
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = ('attachment; '
                                            'filename="shopping_cart.pdf"')
+
         p = canvas.Canvas(response)
-        p.setFont('JetBrainsMono-Regular', size=24)
-        p.drawString(70, 770, 'Список покупок')
-        p.setFont('JetBrainsMono-Regular', size=16)
-        height = 730
-        for item in ingredients:
-            p.drawString(
-                90, height,
-                f'{item["ingredient__name"]} '
-                f'({item["ingredient__measurement_unit"]}) —'
-                f' {item["amount_total"]}')
-            height -= 25
-        p.showPage()
+        per = 28
+        for g in range(0, len(ingredients), per):
+            page_num = p.getPageNumber()
+            p.setFont('JetBrainsMono-Regular', size=21)
+            p.drawString(90, 770, f'Список покупок, стр. {page_num}')
+            p.setFont('JetBrainsMono-Regular', size=16)
+            height = 730
+            for i in range(g, g + per):
+                if i >= len(ingredients):
+                    continue
+                p.drawString(
+                    90, height,
+                    f'{ingredients[i]["ingredient__name"]} '
+                    f'({ingredients[i]["ingredient__measurement_unit"]}) —'
+                    f' {ingredients[i]["amount_total"]}')
+                height -= 25
+            p.showPage()
         p.save()
         return response
 
