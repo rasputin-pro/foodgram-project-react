@@ -2,18 +2,33 @@
 
 ![Foodgram Workflow Status](https://github.com/rasputin-pro/foodgram-project-react/actions/workflows/workflow.yml/badge.svg?branch=master&event=push)
 ___
+![Python](https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54)
+![Django](https://img.shields.io/badge/django-%23092E20.svg?logo=django&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white)
+---
 
+Это учебный проект **«Продуктовый помощник»** на базе фреймворка Django.
+К проекту подключён фронтэнд — React
 
-Это учебный проект **«Продуктовый помощник»**. 
-На этом сервисе пользователи смогут публиковать рецепты, 
+На этом сервисе пользователи могут публиковать рецепты, 
 подписываться на публикации других пользователей, добавлять 
 понравившиеся рецепты в список «Избранное», а перед походом 
 в магазин скачивать сводный список продуктов, необходимых для 
 приготовления одного или нескольких выбранных блюд.
 
+
+## Стек технологий:
+- Python 3.7
+- Django 2.2.28
+- PostgreSQL
+- Docker
+- Nqinx
+
+
 ## Как запустить проект:
 
->Для запуска проекта на сервере должен быть установлен docker compose
+>Для запуска проекта на компьютере должен быть установлен **docker compose**
 
 Клонируйте репозиторий:
 ```
@@ -37,27 +52,24 @@ docker compose:
 docker compose up -d
 ```
 
-Создайте суперпользователя:
-```commandline
-docker compose exec -it infra_local-backend-1 python manage.py createsuperuser
-```
-
 Загрузите демонстрационные данные в базу данных:
 ```commandline
-docker compose exec -it infra_local-backend-1 python manage.py loaddata dump.
-json
+docker compose exec -it backend python manage.py loaddata dump.json
 ```
+> В демонстрационных данных нет изображений!
+> Для авторизации можно воспользоваться учётной записью:
+> 
+> Имя пользователя: `review`
+>
+> Пароль: `PaSSWoRD111`
+>
+> Email: `review@mail.ru`
+> 
+> Сайт — [http://localhost](http://localhost)
+> Админка — [http://localhost/admin](http://localhost/admin).
+
 
 ## Документация API
-После запуска проекта - по адресу: `http://localhost/api/docs/` доступна 
-документация по API.
+После запуска программы документация будет доступна по адресу:
 
-## Демо
-Проект временно развёрнут по адресу: 
-[84.252.137.73](http://84.252.137.73)
-
-Имя пользователя: `review`
-
-Пароль: `PaSSWoRD111`
-
-Email: `review@mail.ru`
+[http://localhost/api/docs/](http://localhost/api/docs/)
