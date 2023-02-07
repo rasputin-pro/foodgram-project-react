@@ -2,13 +2,13 @@ version: '3.3'
 services:
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: rasputin21/foodgram_frontend:latest
+    container_name: frontend
     volumes:
       - ../frontend/:/app/result_build/
   nginx:
     image: nginx:1.19.3
+    container_name: nginx
     ports:
       - "80:80"
     volumes:
@@ -19,13 +19,15 @@ services:
       - media_value:/var/html/media/
   db:
     image: postgres:13.0-alpine
+    container_name: db
     volumes:
       - database:/var/lib/postgresql/data/
     env_file:
       - ./.env
 
   backend:
-    build: ../backend
+    image: rasputin21/foodgram_backend:latest
+    container_name: backend
     volumes:
       - static_value:/app/staticfiles/
       - media_value:/app/media/
