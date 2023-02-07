@@ -38,7 +38,7 @@ class RecipeViewSet(ModelViewSet):
         obj = related.filter(recipe=pk)
         if request.method == 'POST':
             return self.add_object(related, obj, pk)
-        elif request.method == 'DELETE':
+        if request.method == 'DELETE':
             return self.delete_object(obj)
         return None
 
@@ -51,7 +51,7 @@ class RecipeViewSet(ModelViewSet):
         obj = related.filter(recipe=pk)
         if request.method == 'POST':
             return self.add_object(related, obj, pk)
-        elif request.method == 'DELETE':
+        if request.method == 'DELETE':
             return self.delete_object(obj)
         return None
 
