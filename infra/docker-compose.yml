@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   frontend:
-    image: rasputin21/foodgram_frontend:latest
+    image: rasputin21/foodgram_frontend:test
     container_name: foodgram-frontend
     restart: unless-stopped
     volumes:
@@ -32,7 +32,7 @@ services:
       - ./.env
 
   backend:
-    image: rasputin21/foodgram_backend:latest
+    image: rasputin21/foodgram_backend:test
     container_name: foodgram-backend
     restart: unless-stopped
     volumes:
