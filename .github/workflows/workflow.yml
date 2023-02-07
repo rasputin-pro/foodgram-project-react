@@ -31,11 +31,10 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            sudo rm -rf foodgram/
-            mkdir -p foodgram/
-            mkdir -p foodgram/docs/
+            sudo rm -rf /home/${{ secrets.USER }}/foodgram/
+            mkdir -p /home/${{ secrets.USER }}/foodgram/
+            mkdir -p /home/${{ secrets.USER }}/foodgram/docs/
       - name: Copy infra files
         uses: garygrossgarten/github-action-scp@release
         with:
@@ -43,8 +42,8 @@ jobs:
           remote: /home/${{ secrets.USER }}/foodgram/
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
           privateKey: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Copy docs files
         uses: garygrossgarten/github-action-scp@release
         with:
@@ -52,8 +51,8 @@ jobs:
           remote: /home/${{ secrets.USER }}/foodgram/docs/
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
           privateKey: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
 
   build_and_push_backend:
     name: Push backend image to Docker Hub
@@ -73,7 +72,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:test
           context: backend/
 
   build_and_push_frontend:
@@ -95,7 +94,7 @@ jobs:
         with:
           push: true
           context: frontend/
-          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:test
 
   deploy:
     runs-on: ubuntu-latest
@@ -112,14 +111,13 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            cd foodgram
+            cd /home/${{ secrets.USER }}/foodgram/
             sudo docker compose down
             sudo docker pull ${{ secrets.DOCKER_USERNAME 
-            }}/foodgram_backend:latest
+            }}/foodgram_backend:test
             sudo docker pull ${{ secrets.DOCKER_USERNAME 
-            }}/foodgram_frontend:latest
+            }}/foodgram_frontend:test
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
