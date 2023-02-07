@@ -3,12 +3,14 @@ services:
 
   frontend:
     image: rasputin21/foodgram_frontend:latest
-    container_name: frontend
+    container_name: foodgram-frontend
+    restart: unless-stopped
     volumes:
       - ./frontend/:/app/result_build/
   nginx:
     image: nginx:1.19.3
-    container_name: nginx
+    container_name: foodgram-nginx
+    restart: unless-stopped
     ports:
       - "80:80"
     volumes:
@@ -22,7 +24,8 @@ services:
       - backend
   db:
     image: postgres:13.0-alpine
-    container_name: db
+    container_name: foodgram-db
+    restart: unless-stopped
     volumes:
       - database:/var/lib/postgresql/data/
     env_file:
@@ -30,7 +33,8 @@ services:
 
   backend:
     image: rasputin21/foodgram_backend:latest
-    container_name: backend
+    container_name: foodgram-backend
+    restart: unless-stopped
     volumes:
       - static_value:/app/staticfiles/
       - media_value:/app/media/
